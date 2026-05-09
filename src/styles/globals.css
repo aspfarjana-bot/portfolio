@@ -1,0 +1,46 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+@import "tailwindcss";
+
+@layer base {
+    * {
+        font-family: 'Outfit', sans-serif;
+    }
+    
+    html {
+        scroll-behavior: smooth;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        background-color: #030014;
+    }
+
+    body {
+        @apply bg-[#030014] text-white selection:bg-indigo-500 selection:text-white overflow-x-hidden;
+    }
+}
+
+.glass-morphism {
+    background: rgba(3, 0, 20, 0.6);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Custom scrollbar - Premium Dark Theme */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: #030014;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #1e1b4b;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #6366f1;
+}
