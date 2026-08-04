@@ -38,7 +38,7 @@ const adminService = {
     },
 
     updateProfile: async (id, profileData) => {
-        const response = await axios.post(`${API_BASE_URL}/profile/${id}`, profileData, { headers: getAuthHeader() });
+        const response = await axios.put(`${API_BASE_URL}/profile/${id}`, profileData, { headers: getAuthHeader() });
         return response.data;
     },
 
@@ -54,7 +54,7 @@ const adminService = {
     },
 
     updateProject: async (id, projectData) => {
-        const response = await axios.post(`${API_BASE_URL}/projects/${id}`, projectData, { headers: getAuthHeader() });
+        const response = await axios.put(`${API_BASE_URL}/projects/${id}`, projectData, { headers: getAuthHeader() });
         return response.data;
     },
 
@@ -75,7 +75,7 @@ const adminService = {
     },
 
     updateSkill: async (id, skillData) => {
-        const response = await axios.post(`${API_BASE_URL}/skills/${id}`, skillData, { headers: getAuthHeader() });
+        const response = await axios.put(`${API_BASE_URL}/skills/${id}`, skillData, { headers: getAuthHeader() });
         return response.data;
     },
 
@@ -96,7 +96,7 @@ const adminService = {
     },
 
     updateTestimonial: async (id, testimonialData) => {
-        const response = await axios.post(`${API_BASE_URL}/testimonials/${id}`, testimonialData, { headers: getAuthHeader() });
+        const response = await axios.put(`${API_BASE_URL}/testimonials/${id}`, testimonialData, { headers: getAuthHeader() });
         return response.data;
     },
 
@@ -124,6 +124,15 @@ const adminService = {
             headers: { ...getAuthHeader(), 'Content-Type': 'multipart/form-data' }
         });
         return response.data; // { url, fileName }
+    },
+
+    uploadDocument: async (file) => {
+        const formData = new FormData();
+        formData.append('file', file);
+        const response = await axios.post(`${API_BASE_URL}/Upload/document`, formData, {
+            headers: { ...getAuthHeader(), 'Content-Type': 'multipart/form-data' }
+        });
+        return response.data;
     }
 };
 

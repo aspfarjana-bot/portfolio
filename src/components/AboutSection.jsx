@@ -122,11 +122,15 @@ const AboutSection = () => {
                             {/* Inner gradient overlay for depth */}
                             <div className="absolute inset-0 bg-gradient-to-t from-[#030014]/60 via-transparent to-transparent z-20 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                             
-                            <img
-                                src={profile?.ImageUrl || "/images/profile.png"}
-                                alt={profile?.Name || "Farjana Akter"}
-                                className="w-full h-full object-cover relative z-10 transition-all duration-700 group-hover:scale-110 group-hover:rotate-1"
-                            />
+                            {profile ? (
+                                <img
+                                    src={profile.ImageUrl || "/images/profile.png"}
+                                    alt={profile.Name || "Profile"}
+                                    className="w-full h-full object-cover relative z-10 transition-all duration-700 group-hover:scale-110 group-hover:rotate-1"
+                                />
+                            ) : (
+                                <div className="w-full h-full bg-white/5 animate-pulse relative z-10 rounded-3xl"></div>
+                            )}
                         </motion.div>
                     </motion.div>
                 </motion.div>

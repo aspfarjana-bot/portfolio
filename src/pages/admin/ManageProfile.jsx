@@ -14,6 +14,7 @@ const ManageProfile = () => {
     const [status, setStatus] = useState(null);
     const [uploadingLogo, setUploadingLogo] = useState(false);
     const [uploadingAvatar, setUploadingAvatar] = useState(false);
+    const [uploadingResume, setUploadingResume] = useState(false);
     
     // Password state
     const [passwordData, setPasswordData] = useState({ currentPassword: '', newPassword: '', confirmPassword: '' });
@@ -22,6 +23,7 @@ const ManageProfile = () => {
 
     const logoInputRef = useRef();
     const avatarInputRef = useRef();
+    const resumeInputRef = useRef();
 
     useEffect(() => {
         const fetchProfile = async () => {
@@ -80,6 +82,22 @@ const ManageProfile = () => {
             setStatus({ type: 'error', msg: 'Avatar upload failed.' });
         } finally {
             setUploadingAvatar(false);
+            setTimeout(() => setStatus(null), 4000);
+        }
+    };
+
+    const handleResumeUpload = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        setUploadingResume(true);
+        try {
+            const result = await adminService.uploadDocument(file);
+            setProfile({ ...profile, ResumeUrl: result.url });
+            setStatus({ type: 'success', msg: 'Resume uploaded! Click Save to apply.' });
+        } catch (err) {
+            setStatus({ type: 'error', msg: 'Resume upload failed.' });
+        } finally {
+            setUploadingResume(false);
             setTimeout(() => setStatus(null), 4000);
         }
     };
@@ -247,7 +265,6 @@ const ManageProfile = () => {
                                 { label: 'Email', icon: Mail, key: 'Email' },
                                 { label: 'Phone', icon: Phone, key: 'Phone' },
                                 { label: 'Location', icon: MapPin, key: 'Location' },
-                                { label: 'Resume URL', icon: LinkIcon, key: 'ResumeUrl' },
                             ].map((field) => (
                                 <div key={field.key} className="space-y-2">
                                     <label className="text-xs text-gray-500 font-bold uppercase tracking-widest">{field.label}</label>
@@ -261,6 +278,30 @@ const ManageProfile = () => {
                                     </div>
                                 </div>
                             ))}
+                        </div>
+                        
+                        {/* Resume Upload section */}
+                        <div className="space-y-2 pt-2">
+                            <label className="text-xs text-gray-500 font-bold uppercase tracking-widest">Resume / CV (Upload or Paste URL)</label>
+                            <div className="flex flex-col md:flex-row gap-4">
+                                <div className="relative flex-1">
+                                    <LinkIcon size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-600" />
+                                    <input type="text"
+                                        className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 pl-10 pr-4 focus:border-purple-500 outline-none text-sm text-white"
+                                        value={profile?.ResumeUrl || ''}
+                                        onChange={(e) => setProfile({ ...profile, ResumeUrl: e.target.value })}
+                                        placeholder="https://... or click Upload"
+                                    />
+                                </div>
+                                <input ref={resumeInputRef} type="file" accept=".pdf,.doc,.docx" className="hidden" onChange={handleResumeUpload} />
+                                <button type="button" onClick={() => resumeInputRef.current.click()}
+                                    disabled={uploadingResume}
+                                    className="md:w-auto w-full flex items-center justify-center gap-2 bg-purple-600/20 hover:bg-purple-600/40 border border-purple-500/30 text-purple-300 rounded-2xl px-6 py-3 text-xs font-bold transition-all whitespace-nowrap"
+                                >
+                                    {uploadingResume ? <Loader2 size={14} className="animate-spin" /> : <Upload size={14} />}
+                                    {uploadingResume ? 'Uploading...' : 'Upload File'}
+                                </button>
+                            </div>
                         </div>
 
                         <div className="space-y-4">
